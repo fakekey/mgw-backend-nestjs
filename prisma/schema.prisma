@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["filterJson", "interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  address   String?
+  email     String    @unique
+  password  String
+  phone     String?   @unique
+  gender    String?
+  avatarUrl String?
+  coverUrl  String?
+  balance   Float?    @default(0)
+  roles     String[]
+  sessions  Session[]
+
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map(name: "users")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  accessToken  String?
+  refreshToken String?
+  platform     String?
+  device       String?
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  ipAddress    String?
+  isLogout     Boolean? @default(false)
+
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map(name: "sessions")
+}
