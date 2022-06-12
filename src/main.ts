@@ -9,14 +9,9 @@ import { PrismaService } from './common/prisma';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const config = app.get(ConfigService);
+  app.enableCors({ origin: '*' });
   app.use(helmet());
-  app.enableCors({
-    origin: [
-      config.get('WEB_FE_DOMAIN_HOST'),
-      config.get('MOBILE_FE_DOMAIN_HOST'),
-    ],
-  });
+  const config = app.get(ConfigService);
   app.setGlobalPrefix(config.get('API_PREFIX'));
   app.useStaticAssets(join(__dirname, `..${config.get('STATIC_ASSETS_PATH')}`));
   app.useGlobalPipes(
