@@ -8,6 +8,7 @@ import { AppErrorFilter } from './common/filter/app.filter';
 import { AppInterceptor } from './common/interceptor/app.interceptor';
 import { DeviceDetectorMiddleware } from './common/middleware/device-detector.middleware';
 import { PrismaModule } from './common/prisma/prisma.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PrismaModule } from './common/prisma/prisma.module';
     ConfigModule.forRoot(),
     PrismaModule,
     AuthModule,
+    UserModule,
   ],
   providers: [
     {
